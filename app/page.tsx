@@ -1,16 +1,17 @@
 'use client';
+
+// import { Input } from '@/components/ui/input';
+import { HomePage } from './home-page';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 export default function Home() {
-  const fetchProducts = async () => {
-    const res = await fetch('http://localhost:4000/api/v1/products');
-    const data = await res.json();
-    console.log(data);
-  };
+  const queryClient = new QueryClient();
 
   return (
-    <div>
-      <button className='p-4' onClick={() => fetchProducts()}>
-        fetch products
-      </button>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <main>
+        <HomePage />
+      </main>
+    </QueryClientProvider>
   );
 }
