@@ -3,8 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import React, { FC } from 'react';
 
 type Product = {
-  id: string;
-  name: string;
+  _id: string;
+  title: string;
+  price: number;
+  image: string;
 };
 
 export const HomePage: FC<{}> = ({}) => {
@@ -48,7 +50,11 @@ export const HomePage: FC<{}> = ({}) => {
       </button>
       <div>
         {query.data?.map((product: Product) => (
-          <h1 key={product.id}>{product.name}</h1>
+          <div key={product._id}>
+            <h1>{product.title}</h1>
+            <h2>{product.price}</h2>
+            <img src={product.image} />
+          </div>
         ))}
       </div>
     </>
