@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import React, { FC } from 'react';
 
 type Product = {
@@ -48,12 +49,17 @@ export const HomePage: FC<{}> = ({}) => {
       <button className='p-4' onClick={() => query.refetch()}>
         Fetch products
       </button>
-      <div>
+      <div className='flex flex-wrap'>
         {query.data?.map((product: Product) => (
           <div key={product._id}>
+            <Image
+              src={product.image}
+              alt={product.title}
+              width={300}
+              height={300}
+            />
             <h1>{product.title}</h1>
             <h2>{product.price}</h2>
-            <img src={product.image} />
           </div>
         ))}
       </div>
