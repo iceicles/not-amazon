@@ -11,4 +11,5 @@ export type ProductItems = {
 export type Product = {
 
   products: ProductItems[];
+  product: ProductItems[];
 };
