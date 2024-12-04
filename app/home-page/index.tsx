@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,8 +13,8 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import React, { FC, useState } from 'react';
 import { Categories } from './constant';
-import { ProductItems } from '@/Types/product.type';
-import { useGetProducts } from '@/utils/hooks/useGetProducts';
+import { useGetProducts } from '@/utils/hooks/useGetAllProducts';
+import Link from 'next/link';
 
 export const HomePage: FC<{}> = ({}) => {
   const [page, setPage] = useState<number>(1);
@@ -49,44 +50,40 @@ export const HomePage: FC<{}> = ({}) => {
             </div>
           </section>
           <div className='w-[70%] grid grid-cols-3 gap-x-4'>
-            {data?.map((product: ProductItems) => (
-              <Card
-                key={product._id}
-                className='border-none shadow-none border-slate-[0] w-[350px] h-fit'
-              >
-                <CardHeader>
-                  <CardTitle>{product.title}</CardTitle>
-                  <CardDescription className='line-clamp-3'>
-                    {product.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <span>${product.price}</span>
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    width={200}
-                    height={175}
-                  />
-                </CardContent>
-                <CardFooter className='flex gap-3'>
+            {data?.map((product) => (
+              <Link key={product._id} href={`/product/${product._id}`}>
+                <Card className='border-none shadow-none border-slate-[0] w-[350px] h-fit'>
+                  <CardHeader>
+                    <CardTitle>{product.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <span>${product.price}</span>
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      width={200}
+                      height={175}
+                    />
+                  </CardContent>
+                  {/* <CardFooter className='flex gap-3'>
                   <Button>
                     <ShoppingCart />
                   </Button>
                   <Button>
                     <Heart />
                   </Button>
-                </CardFooter>
-              </Card>
+                </CardFooter> */}
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
       </div>
       <div>
-        <Button onClick={() => setPage((prev) => prev + 1)}>Next Page</Button>
         <Button onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}>
           Previous Page
         </Button>
+        <Button onClick={() => setPage((prev) => prev + 1)}>Next Page</Button>
       </div>
     </>
   );
