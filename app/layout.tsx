@@ -8,6 +8,7 @@ import {
   SignInButton,
   UserButton,
 } from '@clerk/nextjs';
+import TanstackProvider from './tanstack-provider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -42,7 +43,7 @@ export default function RootLayout({
           <SignedIn>
             <UserButton />
           </SignedIn>
-          {children}
+          <TanstackProvider>{children}</TanstackProvider>
         </body>
       </html>
     </ClerkProvider>
