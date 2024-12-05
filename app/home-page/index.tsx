@@ -63,6 +63,7 @@ export const HomePage: FC<{}> = ({}) => {
                       alt={product.title}
                       width={200}
                       height={175}
+                      className='max-h-max'
                     />
                   </CardContent>
                   {/* <CardFooter className='flex gap-3'>
