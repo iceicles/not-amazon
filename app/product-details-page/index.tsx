@@ -1,4 +1,5 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 import { useGetProductById } from '@/utils/hooks/useGetProductById';
 import {
   Card,
@@ -10,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import Image from 'next/image';
 import { FC } from 'react';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCreateWishlistProduct } from '@/utils/hooks/useCreateWishlistProduct';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,8 +21,8 @@ interface ProductDetails {
 }
 
 export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
-  const queryClient = useQueryClient();
-  console.log('query client cache - ', queryClient.getQueryCache().getAll());
+  const [cartAmount, setCartAmount] = useState<number>(1);
+
   const { data, isLoading } = useGetProductById(productId);
 
   const wishlistPayload = {
@@ -36,7 +37,12 @@ export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
   }
 
   const onWishlistBtnClick = () => {
-    return mutate(wishlistPayload);
+    // check if wishlist-guid (generated from backend) exists in local storage
+    // then call wishlist api endpoint
+    mutate(wishlistPayload);
+
+    //TODO: create item in local storage for updating amount on the header
+    // localStorage.setItem('wishlist', JSON.stringify({ amount: 0 }));
   };
 
   if (isLoading) {
@@ -45,6 +51,16 @@ export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
   if (!data) {
     return <div>No products with {productId} found</div>;
   }
+
+  const onPlusClick = () => {
+    setCartAmount((prev) => prev + 1);
+  };
+
+  const onMinusClick = () => {
+    if (cartAmount > 1) {
+      setCartAmount((prev) => prev - 1);
+    }
+  };
 
   return (
     <>
@@ -71,12 +87,24 @@ export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
                 <span>{product.description}</span>
                 <span>${product.price}</span>
               </CardContent>
-              <CardFooter className='flex gap-3'>
-                <Button>
-                  <h2>Add to Cart</h2>
-                  <ShoppingCart />
-                </Button>
+              <CardFooter className='flex flex-col items-start gap-3'>
+                <div>
+                  <div className='flex mb-4 gap-5'>
+                    <button onClick={onMinusClick}>
+                      <Minus size={28} strokeWidth={3} />
+                    </button>
+                    <span className='text-2xl'>{cartAmount}</span>
+                    <button onClick={onPlusClick}>
+                      <Plus size={28} strokeWidth={3} />
+                    </button>
+                  </div>
+                  <Button>
+                    Add to Cart
+                    <ShoppingCart />
+                  </Button>
+                </div>
                 <Button onClick={onWishlistBtnClick}>
+                  Add to Wishlist
                   <Heart />
                 </Button>
               </CardFooter>
