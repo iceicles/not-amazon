@@ -1,15 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from '@clerk/nextjs';
 import TanstackProvider from './tanstack-provider';
 import { Header } from '@/components/header';
+import { PageInit } from './page-init';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -33,21 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang='en'>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <Header></Header>
-          <TanstackProvider>{children}</TanstackProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang='en'>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <PageInit />
+        <Header />
+        <TanstackProvider>{children}</TanstackProvider>
+      </body>
+    </html>
   );
 }

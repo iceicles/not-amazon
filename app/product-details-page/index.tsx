@@ -26,7 +26,7 @@ export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
   const { data, isLoading } = useGetProductById(productId);
 
   const wishlistPayload = {
-    name: 'guest', // this should be either an auth or guest user (with uniqueID)
+    user: localStorage.getItem('anonymous_id') as string, // this should be either an auth or guest user (with uniqueID)
     productId: productId,
   };
 

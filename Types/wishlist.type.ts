@@ -1,6 +1,6 @@
 
 export type wishlistPayload = {
-  name: string;
+  user: string;
   productId: string;
   // title: string;
   // description: string;

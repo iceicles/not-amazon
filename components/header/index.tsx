@@ -11,6 +11,12 @@ export const Header: FC<{}> = ({}) => {
   //   setCartAmount(numberOfCartItems);
   // }, []);
 
+  // const [user, setUser] = useState<string | null>('');
+  // useEffect(() => {
+  //   const signedInUser = localStorage.getItem('user');
+  //   console.log('signedInUser - ', signedInUser);
+  //   setUser(signedInUser);
+  // }, [user]);
   return (
     <div>
       <nav>
@@ -27,8 +33,12 @@ export const Header: FC<{}> = ({}) => {
               <span>1</span>
             </li>
             <li>
-              <Link href=''>Sign out</Link>
+              <Link href='/login'>Sign In</Link>
             </li>
+            <li>
+              <Link href='/register'>Create an account</Link>
+            </li>
+            {/* {!!user && <span>{user}</span>} */}
           </span>
         </ul>
       </nav>

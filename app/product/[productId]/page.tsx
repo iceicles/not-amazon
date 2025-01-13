@@ -3,7 +3,7 @@
 */
 
 import { ProductDetailsPage } from '@/app/product-details-page';
-import { ProductItems } from '@/Types/product.type';
+import { ProductItems } from '@/types/product.type';
 
 // type Props = {
 //   params: {

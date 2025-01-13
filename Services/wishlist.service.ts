@@ -1,5 +1,5 @@
-import { ProductItems } from "@/Types/product.type";
-import { wishlistPayload } from "@/Types/wishlist.type";
+import { ProductItems } from "@/types/product.type";
+import { wishlistPayload } from "@/types/wishlist.type";
 
 
 export const createWishlistProduct = async(payload: wishlistPayload) => {
