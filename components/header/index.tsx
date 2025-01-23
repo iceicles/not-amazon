@@ -1,6 +1,7 @@
 'use client';
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/utils/hooks/useAuth';
 
 export const Header: FC<{}> = ({}) => {
   // const [cartAmount, setCartAmount] = useState<number>();
@@ -17,6 +18,22 @@ export const Header: FC<{}> = ({}) => {
   //   console.log('signedInUser - ', signedInUser);
   //   setUser(signedInUser);
   // }, [user]);
+
+  const { user } = useAuth();
+
+  const renderUserOrSignIn = () => {
+    console.log('user - ', user);
+    if (user) {
+      return <p>{user}</p>;
+    } else {
+      return (
+        <li>
+          <Link href='/login'>Sign In</Link>
+        </li>
+      );
+    }
+  };
+
   return (
     <div>
       <nav>
@@ -32,12 +49,13 @@ export const Header: FC<{}> = ({}) => {
               <Link href='/wishlist'>wishlist</Link>
               <span>1</span>
             </li>
-            <li>
+            {renderUserOrSignIn()}
+            {/* <li>
               <Link href='/login'>Sign In</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href='/register'>Create an account</Link>
-            </li>
+            </li> */}
             {/* {!!user && <span>{user}</span>} */}
           </span>
         </ul>

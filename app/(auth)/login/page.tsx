@@ -2,10 +2,13 @@
 import { LoginForm } from '@/components/login-form/login-form';
 // import { LocalStorage } from '@/enum/localStorage';
 import { IFormValues } from '@/interfaces/form';
+import { useAuth } from '@/utils/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 export default function Login() {
+  const { setAuthUser } = useAuth();
+
   const { register, handleSubmit } = useForm<IFormValues>({
     defaultValues: {
       email: '',
@@ -28,9 +31,10 @@ export default function Login() {
       });
 
       if (data.ok) {
-        // const res = await data.json();
+        const res = await data.json();
         // console.log('res - ', res);
         // localStorage.setItem('user', res.user.name);
+        setAuthUser(res.user.name); // set user data in context after successful login
         router.push('/');
       }
     } catch (error) {

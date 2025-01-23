@@ -4,6 +4,7 @@ import './globals.css';
 import TanstackProvider from './tanstack-provider';
 import { Header } from '@/components/header';
 import { PageInit } from './page-init';
+import { AuthProvider } from '@/providers/AuthProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,13 +29,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <PageInit />
-        <Header />
-        <TanstackProvider>{children}</TanstackProvider>
-      </body>
+      <AuthProvider>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <PageInit />
+          <Header />
+          <TanstackProvider>{children}</TanstackProvider>
+        </body>
+      </AuthProvider>
     </html>
   );
 }
