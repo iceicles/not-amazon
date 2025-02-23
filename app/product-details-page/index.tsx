@@ -13,8 +13,10 @@ import Image from 'next/image';
 import { FC } from 'react';
 import { Heart, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCreateWishlistProduct } from '@/utils/hooks/useCreateWishlistProduct';
+import { useCreateWishlistProduct } from '@/utils/hooks/wishlist/useCreateWishlistProduct';
 import { useQueryClient } from '@tanstack/react-query';
+import { useDeleteWishlistProduct } from '@/utils/hooks/wishlist/useDeleteWishlistProduct';
+import { useGetWishlistProduct } from '@/utils/hooks/wishlist/useGetWishlistProduct';
 
 interface ProductDetails {
   productId: string;
@@ -22,28 +24,92 @@ interface ProductDetails {
 
 export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
   const [cartAmount, setCartAmount] = useState<number>(1);
+  const [wishlistItem, setWishlistItem] = useState<boolean>(false);
+  const [products, setProducts] = useState([]);
+
+  let wishlistGuid = '';
+  let wishlistCache = '';
+  if (typeof window !== 'undefined') {
+    wishlistGuid = localStorage.getItem('wishlist-guid') as string;
+    wishlistCache = localStorage.getItem('wishlist-cache') as string;
+  }
+  // useEffect(() => {
+  // }, [wishlistCache, wishlistGuid, localStorage]);
 
   const { data, isLoading } = useGetProductById(productId);
 
   const wishlistPayload = {
-    user: localStorage.getItem('anonymous_id') as string, // this should be either an auth or guest user (with uniqueID)
+    wishlistGuid, // this should be either an auth or guest user (with uniqueID)
     productId: productId,
   };
 
-  const { isSuccess, mutate } = useCreateWishlistProduct();
-
-  if (isSuccess) {
-    console.log('Wishlist product successfully created');
-  }
+  const {
+    isSuccess: createMutateSuccess,
+    mutate: createMutate,
+    data: createMutateData,
+  } = useCreateWishlistProduct();
+  const { mutate: deleteMutate } = useDeleteWishlistProduct();
 
   const onWishlistBtnClick = () => {
     // check if wishlist-guid (generated from backend) exists in local storage
     // then call wishlist api endpoint
-    mutate(wishlistPayload);
+
+    // console.log('wishlistbtn data - ', createMutateData);
+
+    // if (!wishlistItem) {
+    createMutate(wishlistPayload); // add product to wishlist
+    // } else {
+    // deleteMutate(wishlistPayload.productId);
 
     //TODO: create item in local storage for updating amount on the header
     // localStorage.setItem('wishlist', JSON.stringify({ amount: 0 }));
   };
+
+  useEffect(() => {
+    const wishlistItems = [
+      {
+        code: productId,
+      },
+    ];
+    if (createMutateSuccess) {
+      // console.log('wishlistData - ', wishlistData);
+      localStorage.setItem(
+        'wishlist-cache',
+        JSON.stringify({ products: wishlistItems })
+      );
+      localStorage.setItem('wishlist-guid', createMutateData.wishlistGuid);
+      // setWishlistItem(localStorage.getItem('wishlist-guid'));
+      wishlistGuid = localStorage.getItem('wishlist-guid') as string;
+      wishlistCache = localStorage.getItem('wishlist-cache') as string;
+      setWishlistItem(true);
+      const wishlistCacheObj = JSON.parse(wishlistCache);
+      const { products } = wishlistCacheObj;
+      console.log('products - ', products);
+      setProducts(products);
+    }
+  }, [createMutateSuccess, createMutateData]);
+
+  // if there is no wishlist cache OR if there is no product code matching the current viewed product --
+  // make a call with the wishlist guid in local storage, then get the product associated with the guid if it exists
+  // on success, we'll replace and or create wishlist-cache again (or not) in local storage
+  // then read from local storage and make the heart red or not
+
+  /* console.log('boolean1 - ', Boolean(wishlistCacheObj));
+  console.log(
+    'boolean2 - ',
+    Boolean(products.find((code: string) => code === productId))
+  );
+  if (
+    Boolean(wishlistCacheObj) ||
+    Boolean(products.find((code: string) => code === productId))
+  ) {
+    console.log('here????');
+    const { isSuccess: getWishlistSuccess, data: getWishlistData } =
+      useGetWishlistProduct(wishlistGuid);
+    if (getWishlistSuccess) {
+      console.log('data - ', getWishlistData);
+    }
+  } */
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -105,7 +171,7 @@ export const ProductDetailsPage: FC<ProductDetails> = ({ productId }) => {
                 </div>
                 <Button onClick={onWishlistBtnClick}>
                   Add to Wishlist
-                  <Heart />
+                  <Heart fill={wishlistItem ? 'red' : 'none'} />
                 </Button>
               </CardFooter>
             </div>

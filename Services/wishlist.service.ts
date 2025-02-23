@@ -17,17 +17,25 @@ export const createWishlistProduct = async(payload: wishlistPayload) => {
     throw new Error(`Error creating wishlist with body payload - ${payload}`)
   }
 
-  const data = await res.json() as wishlistPayload;
+  const data = await res.json();
   // const { product } = data;
   console.log('data for wishlist - ', data)
   return data;
 }
 
-// export const fetchWishlistProducts = async () => {
+export const deleteWishlistProduct = async(productId: string) => {
+  const res = await fetch(`http://localhost:4000/api/v1/products/wishlist/${productId}`, {
+    method: 'DELETE',
+  })
 
-//   const res = await fetch('http://localhost:4000/api/v1/products/wishlist')
+  const data = await res.json()
+  return data;
+}
 
-//   const data = await res.json() as wishlistPayload
+export const fetchWishlistProducts = async (wishlistGuid: string) => {
+  const queryParams = new URLSearchParams({wishlistGuid})
+  const res = await fetch(`http://localhost:4000/api/v1/products/wishlist?${queryParams}`)
 
-//   return data
-// }
+  const data = await res.json()
+  return data
+}
