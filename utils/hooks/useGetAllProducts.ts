@@ -1,4 +1,4 @@
-import { fetchAllProducts } from "@/Services/products.service";
+import { fetchAllProducts } from "@/services/products.service";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetProducts = (page: number) => {

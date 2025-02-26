@@ -1,4 +1,4 @@
-import { createWishlistProduct, fetchWishlistProducts } from "@/Services/wishlist.service"
+import { createWishlistProduct, fetchWishlistProducts } from "@/services/wishlist.service"
 import { wishlistPayload } from "@/types/wishlist.type"
 import { useMutation, useQuery } from "@tanstack/react-query"
 

@@ -1,13 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
@@ -66,14 +59,6 @@ export const HomePage: FC<{}> = ({}) => {
                       className='max-h-max'
                     />
                   </CardContent>
-                  {/* <CardFooter className='flex gap-3'>
-                  <Button>
-                    <ShoppingCart />
-                  </Button>
-                  <Button>
-                    <Heart />
-                  </Button>
-                </CardFooter> */}
                 </Card>
               </Link>
             ))}
@@ -89,16 +74,3 @@ export const HomePage: FC<{}> = ({}) => {
     </>
   );
 };
-
-// border border-slate-200 shadow-sm
-
-{
-  /* <Image
-              src={product.image}
-              alt={product.title}
-              width={300}
-              height={300}
-            />
-            <h1>{product.title}</h1>
-            <h2>{product.price}</h2> */
-}

@@ -34,11 +34,8 @@ export default async function ProductDetails({
   params: Promise<{ productId: string }>;
 }) {
   const { productId } = await params;
-
-  // console.log('productId - ', productId);
   return (
     <>
-      {/* <h1>Details about product {productId}</h1> */}
       <ProductDetailsPage productId={productId} />
     </>
   );
